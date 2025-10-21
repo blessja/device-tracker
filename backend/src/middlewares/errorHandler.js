@@ -33,7 +33,9 @@ const errorHandler = (err, req, res, next) => {
     err.statusCode = 401;
   }
 
-  console.error(`[ERROR] ${err.statusCode}: ${err.message}`);
+  if (process.env.NODE_ENV !== "test") {
+    console.error(`[ERROR] ${err.statusCode}: ${err.message}`);
+  }
 
   res.status(err.statusCode).json({
     success: false,

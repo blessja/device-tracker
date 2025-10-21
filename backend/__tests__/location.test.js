@@ -1,9 +1,8 @@
-// __tests__/location.test.js
+// __tests__/location.test.js - UPDATED (rename from location.js and remove cleanup)
 const request = require("supertest");
 const app = require("../src/app");
 const Device = require("../src/models/Device");
 const Location = require("../src/models/Location");
-require("./setup");
 
 describe("Location Routes", () => {
   const testDevice = {
@@ -14,10 +13,14 @@ describe("Location Routes", () => {
 
   let deviceToken;
 
-  beforeEach(async () => {
-    await Device.deleteMany({ deviceId: testDevice.deviceId });
-    await Location.deleteMany({ deviceId: testDevice.deviceId });
+  // Remove this - setup.js handles cleanup
+  // beforeEach(async () => {
+  //   await Device.deleteMany({ deviceId: testDevice.deviceId });
+  //   await Location.deleteMany({ deviceId: testDevice.deviceId });
+  //   ...
+  // });
 
+  beforeEach(async () => {
     const res = await request(app)
       .post("/api/devices/register")
       .send(testDevice);
@@ -46,7 +49,7 @@ describe("Location Routes", () => {
         .post("/api/locations/upload")
         .set("Authorization", `Bearer ${deviceToken}`)
         .send({
-          latitude: 91, // Invalid - must be -90 to 90
+          latitude: 91,
           longitude: -74.006,
         });
 
@@ -60,7 +63,7 @@ describe("Location Routes", () => {
         .set("Authorization", `Bearer ${deviceToken}`)
         .send({
           latitude: 40.7128,
-          longitude: 181, // Invalid - must be -180 to 180
+          longitude: 181,
         });
 
       expect(res.statusCode).toBe(400);
@@ -144,6 +147,13 @@ describe("Location Routes", () => {
 
   describe("GET /api/locations/history/:deviceId", () => {
     beforeEach(async () => {
+      // Re-register device for this describe block
+      const res = await request(app)
+        .post("/api/devices/register")
+        .send(testDevice);
+      deviceToken = res.body.data.token;
+
+      // Upload locations
       const locations = [
         { latitude: 40.7128, longitude: -74.006 },
         { latitude: 40.72, longitude: -74.008 },

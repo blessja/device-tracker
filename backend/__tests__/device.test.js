@@ -1,8 +1,8 @@
-// __tests__/device.test.js
+// __tests__/device.test.js - UPDATED (remove beforeEach cleanup)
 const request = require("supertest");
 const app = require("../src/app");
 const Device = require("../src/models/Device");
-require("./setup");
+const Location = require("../src/models/Location");
 
 describe("Device Routes", () => {
   const testDevice = {
@@ -11,9 +11,10 @@ describe("Device Routes", () => {
     ownerId: "owner_001",
   };
 
-  beforeEach(async () => {
-    await Device.deleteMany({ deviceId: testDevice.deviceId });
-  });
+  // Remove this - setup.js handles cleanup
+  // beforeEach(async () => {
+  //   await Device.deleteMany({ deviceId: testDevice.deviceId });
+  // });
 
   describe("POST /api/devices/register", () => {
     it("should register a new device", async () => {

@@ -1,9 +1,8 @@
-// __tests__/auth.test.js
+// __tests__/auth.test.js - UPDATED (remove individual beforeEach cleanups)
 const request = require("supertest");
 const mongoose = require("mongoose");
 const app = require("../src/app");
 const Owner = require("../src/models/Owner");
-require("./setup");
 
 describe("Authentication Routes", () => {
   const testOwner = {
@@ -14,9 +13,10 @@ describe("Authentication Routes", () => {
     companyName: "Test Company",
   };
 
-  beforeEach(async () => {
-    await Owner.deleteMany({ ownerId: testOwner.ownerId });
-  });
+  // Remove this beforeEach - setup.js handles cleanup
+  // beforeEach(async () => {
+  //   await Owner.deleteMany({ ownerId: testOwner.ownerId });
+  // });
 
   describe("POST /api/auth/register", () => {
     it("should register a new owner successfully", async () => {
