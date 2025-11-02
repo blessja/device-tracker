@@ -9,7 +9,7 @@ router.use("/api/auth", authRoutes);
 router.use("/api/devices", deviceRoutes);
 router.use("/api/locations", locationRoutes);
 
-router.get("/health", (req, res) => {
+router.get("/api/health", (req, res) => {
   res.json({ status: "OK", timestamp: new Date().toISOString() });
 });
 

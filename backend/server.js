@@ -16,6 +16,9 @@ connectDB()
     console.error("Failed to connect to database:", error);
     process.exit(1);
   });
+app.get("/", (req, res) => {
+  res.send("✅ Backend is running!");
+});
 
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (error) => {
